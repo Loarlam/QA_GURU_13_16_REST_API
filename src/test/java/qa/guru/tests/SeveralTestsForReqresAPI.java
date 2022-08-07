@@ -75,7 +75,6 @@ public class SeveralTestsForReqresAPI extends BaseTest {
     void gettingUser() {
         given().
                 contentType(JSON)
-                .log().all()
                 .when()
                 .get("/api/users/" + dataForTheTest.randomUserId)
                 .then()
@@ -84,5 +83,18 @@ public class SeveralTestsForReqresAPI extends BaseTest {
                         , "data.email", containsString("@reqres.in")
                         , "data.first_name", notNullValue()
                         , "data.avatar", containsString(dataForTheTest.randomUserId + "-image.jpg"));
+    }
+
+    @Test
+    @DisplayName("Неудачная попытка логирования в методе api/login")
+    void loggingUser() {
+        given().
+                contentType(JSON)
+                .body(dataForTheTest.jsonBodyUnsuccessfullLogin.toString())
+                .when()
+                .post("/api/login")
+                .then()
+                .statusCode(400)
+                .body("error", equalTo("Missing password"));
     }
 }

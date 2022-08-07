@@ -17,12 +17,15 @@ public class DataForTheTest {
             userNameToUpdate = fakerData.funnyName().name(),
             userJob = fakerData.job().position(),
             userJobToUpdate = fakerData.job().position(),
-            timeBeforeStartTest = Instant.now().toString();
+            timeBeforeStartTest = Instant.now().toString(),
+            userUnsuccessfullLogin = fakerData.internet().safeEmailAddress();
 
     JSONObject jsonBodyToCreate = new JSONObject()
                 .put("name", userName)
                 .put("job", userJob),
                jsonBodyToUpdate = new JSONObject()
                 .put("name", userNameToUpdate)
-                .put("job", userJobToUpdate);
+                .put("job", userJobToUpdate),
+               jsonBodyUnsuccessfullLogin = new JSONObject()
+                .put("email", userUnsuccessfullLogin);
 }
