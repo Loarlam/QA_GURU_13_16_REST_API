@@ -27,7 +27,7 @@ public class SeveralTestsForReqresAPI extends BaseTest {
     }
 
     @Test
-    @DisplayName("Создаёт юзера, затем обновляет информацию по созданному юзеру методом /api/users/{id юзера}}")
+    @DisplayName("Создаёт юзера, затем обновляет информацию по созданному юзеру методом /api/users/{id юзера}")
     void updatingUserInfo() {
         userId = Integer.parseInt(given().
                 contentType(JSON)
