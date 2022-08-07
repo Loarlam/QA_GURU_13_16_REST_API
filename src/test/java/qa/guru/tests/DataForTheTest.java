@@ -2,6 +2,7 @@ package qa.guru.tests;
 
 import com.github.javafaker.Faker;
 
+import java.time.Instant;
 import java.time.Month;
 import java.util.Locale;
 import java.util.Random;
@@ -15,9 +16,12 @@ public class DataForTheTest {
 
     String userName = fakerData.funnyName().name(),
             userSurname = fakerData.name().lastName(),
+            userNameToUpdate = fakerData.funnyName().name(),
             userJob = fakerData.job().position(),
+            userJobToUpdate = fakerData.job().position(),
             userEmail = fakerData.internet().safeEmailAddress(),
             userPhoneNumber = String.valueOf(random.nextInt(1000000000) + 9000000000L),
             userMonthOfBirth = Month.values()[random.nextInt(Month.values().length)].name(),
-            userAddress = fakerData.address().fullAddress();
+            userAddress = fakerData.address().fullAddress(),
+            timeBeforeStartTest = Instant.now().toString();
 }
