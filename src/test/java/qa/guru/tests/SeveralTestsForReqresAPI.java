@@ -1,8 +1,7 @@
 package qa.guru.tests;
 
-import org.json.JSONObject;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
@@ -36,7 +35,8 @@ public class SeveralTestsForReqresAPI extends BaseTest {
                 .when()
                 .post("/api/users")
                 .then()
-                .extract().path("id"));
+                .extract()
+                .path("id"));
 
         given().
                 contentType(JSON)
@@ -59,7 +59,8 @@ public class SeveralTestsForReqresAPI extends BaseTest {
                 .when()
                 .post("/api/users")
                 .then()
-                .extract().path("id"));
+                .extract()
+                .path("id"));
 
         given().
                 contentType(JSON)
@@ -76,9 +77,13 @@ public class SeveralTestsForReqresAPI extends BaseTest {
                 contentType(JSON)
                 .log().all()
                 .when()
-                .get("/api/users/" + dataForTheTest.userId)
+                .get("/api/users/" + dataForTheTest.randomUserId)
                 .then()
-                .log().all()
-                .statusCode(200);
+                .log().body()
+                .statusCode(200)
+                .body("data.id", equalTo(dataForTheTest.randomUserId)
+                        , "data.email", containsString("@reqres.in")
+                        , "data.first_name", notNullValue()
+                        , "data.avatar", containsString(dataForTheTest.randomUserId + "-image.jpg"));
     }
 }

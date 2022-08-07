@@ -11,7 +11,7 @@ public class DataForTheTest {
     Faker fakerData = new Faker(Locale.FRANCE);
     Random random = new Random();
 
-    int userId = random.nextInt(10) + 1;
+    int randomUserId = random.nextInt(10) + 1;
 
     String userName = fakerData.funnyName().name(),
             userNameToUpdate = fakerData.funnyName().name(),
