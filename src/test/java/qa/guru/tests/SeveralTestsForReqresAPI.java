@@ -1,27 +1,22 @@
 package qa.guru.tests;
 
 import org.json.JSONObject;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.DisplayName;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
 import static org.hamcrest.Matchers.*;
 
 public class SeveralTestsForReqresAPI extends BaseTest {
-    JSONObject jsonObj;
     int userId;
 
     @Test
     @DisplayName("Проверка создания нового юзера методом /api/users и параметров ответа созданного юзера")
     void creatingUser() {
-        jsonObj = new JSONObject()
-                .put("name", dataForTheTest.userName)
-                .put("job", dataForTheTest.userJob);
-
-        userId = Integer.parseInt(given().
+        given().
                 contentType(JSON)
-                .body(jsonObj.toString())
+                .body(dataForTheTest.jsonBodyToCreate.toString())
                 .when()
                 .post("/api/users")
                 .then()
@@ -29,20 +24,23 @@ public class SeveralTestsForReqresAPI extends BaseTest {
                 .body("name", equalTo(dataForTheTest.userName)
                         , "job", equalTo(dataForTheTest.userJob)
                         , "id", notNullValue()
-                        , "createdAt", greaterThan(dataForTheTest.timeBeforeStartTest))
-                .extract().path("id"));
+                        , "createdAt", greaterThan(dataForTheTest.timeBeforeStartTest));
     }
 
     @Test
-    @DisplayName("Обновление информации по созданному юзеру методом /api/users/{id юзера}}")
+    @DisplayName("Создаёт юзера, затем обновляет информацию по созданному юзеру методом /api/users/{id юзера}}")
     void updatingUserInfo() {
-        jsonObj = new JSONObject()
-                .put("name", dataForTheTest.userNameToUpdate)
-                .put("job", dataForTheTest.userJobToUpdate);
+        userId = Integer.parseInt(given().
+                contentType(JSON)
+                .body(dataForTheTest.jsonBodyToCreate.toString())
+                .when()
+                .post("/api/users")
+                .then()
+                .extract().path("id"));
 
         given().
                 contentType(JSON)
-                .body(jsonObj.toString())
+                .body(dataForTheTest.jsonBodyToUpdate.toString())
                 .when()
                 .put("/api/users/" + userId)
                 .then()
@@ -53,14 +51,34 @@ public class SeveralTestsForReqresAPI extends BaseTest {
     }
 
     @Test
-    @DisplayName("Удаление информации по пользователю /api/users/{id юзера}")
+    @DisplayName("Создаём юзера, затем удаленяем информацию по юзеру /api/users/{id юзера}")
     void deletingUser() {
+        userId = Integer.parseInt(given().
+                contentType(JSON)
+                .body(dataForTheTest.jsonBodyToCreate.toString())
+                .when()
+                .post("/api/users")
+                .then()
+                .extract().path("id"));
+
         given().
                 contentType(JSON)
-                .log().all()
                 .when()
                 .delete("/api/users/" + userId)
                 .then()
                 .statusCode(204);
+    }
+
+    @Test
+    @DisplayName("Получает информацию по одном пользователю /api/users/{id юзера}")
+    void gettingUser() {
+        given().
+                contentType(JSON)
+                .log().all()
+                .when()
+                .get("/api/users/" + dataForTheTest.userId)
+                .then()
+                .log().all()
+                .statusCode(200);
     }
 }
