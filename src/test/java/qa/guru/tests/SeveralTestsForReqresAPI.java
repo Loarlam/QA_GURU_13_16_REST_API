@@ -79,7 +79,6 @@ public class SeveralTestsForReqresAPI extends BaseTest {
                 .when()
                 .get("/api/users/" + dataForTheTest.randomUserId)
                 .then()
-                .log().body()
                 .statusCode(200)
                 .body("data.id", equalTo(dataForTheTest.randomUserId)
                         , "data.email", containsString("@reqres.in")
