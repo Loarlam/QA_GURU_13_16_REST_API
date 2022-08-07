@@ -9,14 +9,18 @@ repositories {
     mavenCentral()
 }
 
-def junitVersion = "5.8.1",
+def junitVersion = '5.9.0',
     restAssuredVersion = "5.1.1",
-    slf4jVersion = '1.7.36'
+    slf4jVersion = '1.7.36',
+    fakerVersion = '1.0.2',
+    orgJsonVersion = '20220320'
 
 dependencies
         {
-            testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion",
-                    "io.rest-assured:rest-assured:$restAssuredVersion")
+            testImplementation("org.junit.jupiter:junit-jupiter:$junitVersion",
+                    "io.rest-assured:rest-assured:$restAssuredVersion",
+                    "com.github.javafaker:javafaker:$fakerVersion",
+                    "org.json:json:$orgJsonVersion")
             testRuntimeOnly("org.slf4j:slf4j-simple:$slf4jVersion")
         }
 
@@ -26,5 +30,4 @@ tasks.withType(JavaCompile) {
 
 test {
     useJUnitPlatform()
-    systemProperties(System.getProperties())
 }
